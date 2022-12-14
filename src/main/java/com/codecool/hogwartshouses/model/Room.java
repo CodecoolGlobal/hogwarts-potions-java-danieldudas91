@@ -1,5 +1,6 @@
 package com.codecool.hogwartshouses.model;
 
+import com.codecool.hogwartshouses.model.types.PetType;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,5 +32,9 @@ public class Room {
         else{
             System.out.println("Room is full");
         }
+    }
+
+    public boolean hasOwlOrCat() {
+        return students.stream().anyMatch(student -> student.getPetType().equals(PetType.CAT) || student.getPetType().equals(PetType.OWL));
     }
 }
