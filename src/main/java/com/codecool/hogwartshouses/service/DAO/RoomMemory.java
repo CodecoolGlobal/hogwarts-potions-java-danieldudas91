@@ -23,4 +23,11 @@ public class RoomMemory implements RoomDAO {
             System.out.println("Room is null");
         }
     }
+
+    public void addGivenNumberOfRooms(int numberOfRooms){
+        for (int i = 0; i < numberOfRooms; i++) {
+            Room newRoom = new Room();
+            rooms.add(newRoom);
+        }
+    }
 }
