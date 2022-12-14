@@ -19,6 +19,6 @@ public interface RoomDAO {
 
     void assignStudentToRoom(UUID roomId, Student student);
     Set<Room> getAllAvailableRooms();
-    Set<Room> getAvailableRoomsForStudentsWithCertainTypeOfPet(PetType petType);
+    Set<Room> getAvailableRoomsForRatOwners();
 
 }
