@@ -15,5 +15,12 @@ public class RoomMemory implements RoomDAO {
         this.rooms = new HashSet<>();
     }
 
-
+    public void addRoom(Room room){
+        if(room != null){
+            rooms.add(room);
+        }
+        else{
+            System.out.println("Room is null");
+        }
+    }
 }
