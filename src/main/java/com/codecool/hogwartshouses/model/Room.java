@@ -14,5 +14,13 @@ import java.util.UUID;
 public class Room {
     private UUID id;
     private Set<Student> students;
+    private int capacity;
 
+    public Room(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public boolean isAvailable() {
+        return students.size() < capacity;
+    }
 }
