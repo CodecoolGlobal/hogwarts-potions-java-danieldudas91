@@ -23,4 +23,13 @@ public class Room {
     public boolean isAvailable() {
         return students.size() < capacity;
     }
+
+    public void addStudent(Student student){
+        if(isAvailable()){
+            students.add(student);
+        }
+        else{
+            System.out.println("Room is full");
+        }
+    }
 }
