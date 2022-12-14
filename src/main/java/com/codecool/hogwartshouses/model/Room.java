@@ -10,8 +10,6 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
-@NoArgsConstructor
-@Builder
 public class Room {
     private UUID id;
     private Set<Student> students;
@@ -19,6 +17,8 @@ public class Room {
 
     public Room(int capacity) {
         this.capacity = capacity;
+        this.students = new HashSet<>();
+        this.id= UUID.randomUUID();
     }
 
     public boolean isAvailable() {
