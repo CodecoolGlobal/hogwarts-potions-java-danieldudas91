@@ -14,5 +14,9 @@ public class Student {
     private int age;
     private PetType petType;
 
-
+    public Student(String name, int age, PetType petType) {
+        this.name = name;
+        this.age = age;
+        this.petType = petType;
+    }
 }
