@@ -5,10 +5,7 @@ import com.codecool.hogwartshouses.model.Student;
 import com.codecool.hogwartshouses.model.types.PetType;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashSet;
-import java.util.NoSuchElementException;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -29,11 +26,9 @@ public class RoomMemory implements RoomDAO {
         }
     }
 
-    public void addGivenNumberOfRooms(int numberOfRooms, int capacity){
-        for (int i = 0; i < numberOfRooms; i++) {
-            Room newRoom = new Room(capacity);
-            rooms.add(newRoom);
-        }
+    public void addNewRoom(int capacity){
+        Room newRoom = new Room(capacity);
+        rooms.add(newRoom);
     }
 
     @Override
@@ -58,13 +53,13 @@ public class RoomMemory implements RoomDAO {
     }
 
     @Override
-    public void assignStudentToRoom(UUID roomId, Student student) {
-        Room foundRoom = rooms.stream().filter(room -> room.getId().equals(roomId)).findFirst().orElse(null);
+    public void assignStudentToRoom(Student student) {
+        Room foundRoom = rooms.stream().max(Comparator.comparing(room -> room.getStudents().size())).orElse(null);
         if(foundRoom != null){
             foundRoom.addStudent(student);
         }
         else{
-            System.out.println("No room found with given id!");
+            System.out.println("No empty rooms found!");
         }
     }
 
@@ -76,6 +71,11 @@ public class RoomMemory implements RoomDAO {
     @Override
     public Set<Room> getAvailableRoomsForRatOwners() {
         return rooms.stream().filter(Room::hasOwlOrCat).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<Room> getAllRooms() {
+        return rooms;
     }
 
 
