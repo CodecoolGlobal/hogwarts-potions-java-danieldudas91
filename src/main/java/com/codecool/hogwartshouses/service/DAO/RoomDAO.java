@@ -9,7 +9,7 @@ import java.util.UUID;
 public interface RoomDAO {
     void addRoom(Room room);
 
-    void addGivenNumberOfRooms(int numberOfRooms);
+    void addGivenNumberOfRooms(int numberOfRooms, int capacity);
 
     void deleteRoom(UUID roomId);
 
