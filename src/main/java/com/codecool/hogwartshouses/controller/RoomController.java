@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 import java.util.UUID;
-
+@CrossOrigin("*")
 @RestController
 public class RoomController {
     @Autowired
