@@ -1,5 +1,6 @@
 package com.codecool.hogwartshouses.model;
 
+import com.codecool.hogwartshouses.model.types.HouseType;
 import com.codecool.hogwartshouses.model.types.PetType;
 import lombok.Builder;
 import lombok.Data;
@@ -15,12 +16,14 @@ public class Room {
     private String name;
     private Set<Student> students;
     private int capacity;
+    private HouseType houseType;
 
-    public Room(String name, int capacity) {
+    public Room(String name, int capacity, HouseType houseType) {
         this.name = name;
         this.capacity = capacity;
         this.students = new HashSet<>();
         this.id= UUID.randomUUID();
+        this.houseType = houseType;
     }
 
     public boolean isAvailable() {
