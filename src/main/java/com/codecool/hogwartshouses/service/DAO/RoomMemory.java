@@ -2,7 +2,7 @@ package com.codecool.hogwartshouses.service.DAO;
 
 import com.codecool.hogwartshouses.model.Room;
 import com.codecool.hogwartshouses.model.Student;
-import com.codecool.hogwartshouses.model.types.PetType;
+import com.codecool.hogwartshouses.model.types.HouseType;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -27,9 +27,9 @@ public class RoomMemory implements RoomDAO {
         }
     }
 
-    public void addNewRoom(int capacity) {
+    public void addNewRoom(int capacity, HouseType houseType) {
         String roomName = "Room number " + (rooms.size() + INDEX_CORRECTION_NUMBER);
-        Room newRoom = new Room(roomName, capacity);
+        Room newRoom = new Room(roomName, capacity, houseType);
         rooms.add(newRoom);
     }
 
@@ -56,6 +56,7 @@ public class RoomMemory implements RoomDAO {
     @Override
     public void assignStudentToRoom(Student student) {
         Room foundRoom = rooms.stream().filter(Room::isAvailable)
+                .filter(room -> room.getHouseType().equals(student.getHouseType()))
                 .max(Comparator.comparing(room -> room.getStudents().size())).orElse(null);
         if (foundRoom != null) {
             foundRoom.addStudent(student);
