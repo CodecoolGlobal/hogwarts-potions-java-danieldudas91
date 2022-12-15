@@ -22,7 +22,7 @@ public class RoomController {
 
     @PostMapping("/rooms")
     public void addNewRoom(@RequestBody HouseManagerDTO houseManagerDTO) {
-        roomService.addNewRoom(houseManagerDTO.getCapacity());
+        roomService.addNewRoom(houseManagerDTO.getCapacity(), houseManagerDTO.getHouseType());
     }
 
     @GetMapping("/rooms/{roomId}")
