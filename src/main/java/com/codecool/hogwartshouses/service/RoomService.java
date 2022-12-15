@@ -38,4 +38,8 @@ public class RoomService {
     public Set<Room> getAvailableRoomsForRatOwners() {
         return roomDAO.getAvailableRoomsForRatOwners();
     }
+
+    public void deleteRoomById(UUID roomId) {
+        roomDAO.deleteRoom(roomId);
+    }
 }

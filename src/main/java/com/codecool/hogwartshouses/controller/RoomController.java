@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 import java.util.UUID;
+
 @CrossOrigin("*")
 @RestController
 public class RoomController {
@@ -15,31 +16,37 @@ public class RoomController {
     RoomService roomService;
 
     @GetMapping("/rooms")
-    public Set<Room> getAllRooms(){
+    public Set<Room> getAllRooms() {
         return roomService.getAllRooms();
     }
+
     @PostMapping("/rooms")
-    public void addNewRoom(@RequestBody HouseManagerDTO houseManagerDTO){
+    public void addNewRoom(@RequestBody HouseManagerDTO houseManagerDTO) {
         roomService.addNewRoom(houseManagerDTO.getCapacity());
     }
 
     @GetMapping("/rooms/{roomId}")
-    public Room getRoomById(@PathVariable UUID roomId){
+    public Room getRoomById(@PathVariable UUID roomId) {
         return roomService.getRoomById(roomId);
     }
 
     @PutMapping("/rooms/{roomId}")
-    public void renovateRoom(@PathVariable UUID roomId){
+    public void renovateRoom(@PathVariable UUID roomId) {
         roomService.renovateRoom(roomId);
     }
 
     @GetMapping("/rooms/available")
-    public Set<Room> getAvailableRooms(){
+    public Set<Room> getAvailableRooms() {
         return roomService.getAvailableRooms();
     }
 
     @GetMapping("/rooms/rat-owners")
-    public Set<Room> getAvailableRoomsForRatOwners(){
+    public Set<Room> getAvailableRoomsForRatOwners() {
         return roomService.getAvailableRoomsForRatOwners();
+    }
+
+    @DeleteMapping("/rooms/{roomId}")
+    public void deleteRoomById(@PathVariable UUID roomId){
+        roomService.deleteRoomById(roomId);
     }
 }
