@@ -12,10 +12,12 @@ import java.util.UUID;
 @Data
 public class Room {
     private UUID id;
+    private String name;
     private Set<Student> students;
     private int capacity;
 
-    public Room(int capacity) {
+    public Room(String name, int capacity) {
+        this.name = name;
         this.capacity = capacity;
         this.students = new HashSet<>();
         this.id= UUID.randomUUID();
@@ -35,6 +37,7 @@ public class Room {
     }
 
     public boolean hasOwlOrCat() {
-        return students.stream().anyMatch(student -> student.getPetType().equals(PetType.CAT) || student.getPetType().equals(PetType.OWL));
+        return students.stream().anyMatch(student -> student.getPetType()
+                .equals(PetType.CAT) || student.getPetType().equals(PetType.OWL));
     }
 }
