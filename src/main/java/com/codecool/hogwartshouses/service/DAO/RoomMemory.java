@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 public class RoomMemory implements RoomDAO {
 
     private Set<Room> rooms;
+    private static final int INDEX_CORRECTION_NUMBER = 1;
 
     public RoomMemory() {
         this.rooms = new HashSet<>();
@@ -26,18 +27,18 @@ public class RoomMemory implements RoomDAO {
         }
     }
 
-    public void addNewRoom(int capacity){
-        Room newRoom = new Room(capacity);
+    public void addNewRoom(int capacity) {
+        String roomName = "Room number " + (rooms.size() + INDEX_CORRECTION_NUMBER);
+        Room newRoom = new Room(roomName, capacity);
         rooms.add(newRoom);
     }
 
     @Override
     public void deleteRoom(UUID roomId) {
         Room roomToFind = rooms.stream().filter(room -> room.getId().equals(roomId)).findFirst().orElse(null);
-        if(roomToFind != null){
+        if (roomToFind != null) {
             rooms.remove(roomToFind);
-        }
-        else{
+        } else {
             System.out.println("No room found with given id!");
         }
     }
@@ -54,11 +55,11 @@ public class RoomMemory implements RoomDAO {
 
     @Override
     public void assignStudentToRoom(Student student) {
-        Room foundRoom = rooms.stream().max(Comparator.comparing(room -> room.getStudents().size())).orElse(null);
-        if(foundRoom != null){
+        Room foundRoom = rooms.stream().filter(Room::isAvailable)
+                .max(Comparator.comparing(room -> room.getStudents().size())).orElse(null);
+        if (foundRoom != null) {
             foundRoom.addStudent(student);
-        }
-        else{
+        } else {
             System.out.println("No empty rooms found!");
         }
     }
