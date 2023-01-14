@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 	<groupId>com.codecool</groupId>
-	<artifactId>hogwarts-houses</artifactId>
+	<artifactId>hogwarts-potions</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>hogwarts-houses</name>
+	<name>hogwarts-potions</name>
 	<description>Sprint1</description>
 	<properties>
 		<java.version>11</java.version>
