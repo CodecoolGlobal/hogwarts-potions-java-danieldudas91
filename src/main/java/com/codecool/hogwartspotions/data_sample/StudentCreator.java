@@ -4,6 +4,7 @@ import com.codecool.hogwartspotions.model.Student;
 import com.codecool.hogwartspotions.model.types.HouseType;
 import com.codecool.hogwartspotions.model.types.PetType;
 import com.codecool.hogwartspotions.service.DAO.StudentMemory;
+import com.codecool.hogwartspotions.service.JPA.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,8 +23,9 @@ public class StudentCreator {
     private static final int NUMBER_OF_STUDENTS = 10;
     private static final int MAX_AGE = 18;
     private static final int MIN_AGE = 7;
+
     @Autowired
-    private StudentMemory studentMemory;
+    private StudentRepository studentRepository;
 
     public StudentCreator() {
     }
@@ -53,8 +55,10 @@ public class StudentCreator {
 
     @PostConstruct
     public void initStudents(){
-        for (int i = 0; i < NUMBER_OF_STUDENTS; i++) {
-            studentMemory.addStudent(createRandomStudent());
+        if(!studentRepository.findAll().iterator().hasNext()){
+            for (int i = 0; i < NUMBER_OF_STUDENTS; i++) {
+                studentRepository.save(createRandomStudent());
+            }
         }
     }
 
