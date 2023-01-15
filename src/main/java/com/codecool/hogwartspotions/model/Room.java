@@ -3,25 +3,38 @@ package com.codecool.hogwartspotions.model;
 import com.codecool.hogwartspotions.model.types.HouseType;
 import com.codecool.hogwartspotions.model.types.PetType;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import javax.persistence.*;
+import java.util.*;
 
 @Data
+@Entity
+@NoArgsConstructor
+@Table(name = "rooms")
 public class Room {
-    private UUID id;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
     private String name;
-    private Set<Student> students;
+    @OneToMany()
+    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    private List<Student> students;
     private int capacity;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "house_type")
     private HouseType houseType;
+    @Column(name = "rat_friendly")
+    private boolean ratFriendly;
+    private boolean available;
 
     public Room(String name, int capacity, HouseType houseType) {
         this.name = name;
         this.capacity = capacity;
-        this.students = new HashSet<>();
-        this.id= UUID.randomUUID();
+        this.students = new ArrayList<>();
         this.houseType = houseType;
+        this.ratFriendly = !hasOwlOrCat();
+        this.available = isAvailable();
     }
 
     public boolean isAvailable() {
