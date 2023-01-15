@@ -11,7 +11,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class HouseManagerDTO {
     private int capacity;
-    private UUID roomId;
+    private Long roomId;
     private String studentName;
     private int studentAge;
     private PetType studentPetType;
