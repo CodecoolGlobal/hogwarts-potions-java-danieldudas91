@@ -2,21 +2,24 @@ package com.codecool.hogwartspotions.controller;
 
 import com.codecool.hogwartspotions.model.HouseManagerDTO;
 import com.codecool.hogwartspotions.model.Room;
+import com.codecool.hogwartspotions.model.Student;
 import com.codecool.hogwartspotions.service.RoomService;
+import com.codecool.hogwartspotions.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
-import java.util.UUID;
+import java.util.List;
 
 @CrossOrigin("*")
 @RestController
 public class RoomController {
     @Autowired
     RoomService roomService;
+    @Autowired
+    StudentService studentService;
 
     @GetMapping("/rooms")
-    public Set<Room> getAllRooms() {
+    public List<Room> getAllRooms() {
         return roomService.getAllRooms();
     }
 
@@ -26,27 +29,30 @@ public class RoomController {
     }
 
     @GetMapping("/rooms/{roomId}")
-    public Room getRoomById(@PathVariable UUID roomId) {
+    public Room getRoomById(@PathVariable Long roomId) {
         return roomService.getRoomById(roomId);
     }
 
-    @PutMapping("/rooms/{roomId}")
-    public void renovateRoom(@PathVariable UUID roomId) {
-        roomService.renovateRoom(roomId);
+
+    @PostMapping("/rooms/assign/{name}")
+    public void assignStudentToRoom(@PathVariable String name){
+        Student student = studentService.findStudentByName(name);
+        roomService.assignStudentToRoom(student);
     }
 
     @GetMapping("/rooms/available")
-    public Set<Room> getAvailableRooms() {
+    public List<Room> getAvailableRooms() {
         return roomService.getAvailableRooms();
     }
 
     @GetMapping("/rooms/rat-owners")
-    public Set<Room> getAvailableRoomsForRatOwners() {
+    public List<Room> getAvailableRoomsForRatOwners() {
         return roomService.getAvailableRoomsForRatOwners();
     }
 
     @DeleteMapping("/rooms/{roomId}")
-    public void deleteRoomById(@PathVariable UUID roomId){
+    public void deleteRoomById(@PathVariable Long roomId){
         roomService.deleteRoomById(roomId);
     }
+
 }
