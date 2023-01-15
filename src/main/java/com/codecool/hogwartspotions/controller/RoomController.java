@@ -55,4 +55,8 @@ public class RoomController {
         roomService.deleteRoomById(roomId);
     }
 
+    @GetMapping("/rooms/{roomId}/students")
+    public List<Student> getStudentsInRoom(@PathVariable Long roomId){
+        return roomService.getStudentsInRoom(roomId);
+    }
 }
