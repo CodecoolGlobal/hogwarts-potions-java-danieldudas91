@@ -55,5 +55,8 @@ public class RoomService {
         roomRepository.deleteById(roomId);
     }
 
-
+    public List<Student> getStudentsInRoom(Long roomId){
+        Room foundRoom = roomRepository.findById(roomId).orElseThrow(NoSuchElementException::new);
+        return foundRoom.getStudents();
+    }
 }
