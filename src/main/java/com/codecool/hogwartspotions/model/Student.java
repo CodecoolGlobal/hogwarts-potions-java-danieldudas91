@@ -2,11 +2,11 @@ package com.codecool.hogwartspotions.model;
 
 import com.codecool.hogwartspotions.model.types.HouseType;
 import com.codecool.hogwartspotions.model.types.PetType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Data
 @Entity
@@ -18,11 +18,18 @@ public class Student {
     private int age;
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    @Column(name = "room_id")
-    private Long roomId;
-    @Column(name = "student_recipe_id")
-    private Long recipeId;
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    @JsonIgnore
+    private Room room;
+    @OneToOne(mappedBy = "student")
+    @JsonIgnore
+    private Recipe recipe;
+    @OneToOne(mappedBy = "student")
+    @JsonIgnore
+    private Potion potion;
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_type")
     private PetType petType;
