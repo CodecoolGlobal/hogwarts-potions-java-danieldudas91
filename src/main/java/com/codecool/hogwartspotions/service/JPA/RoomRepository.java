@@ -13,7 +13,7 @@ public interface RoomRepository extends CrudRepository<Room, Long> {
     List<Room> findAllByAvailableTrueAndRatFriendlyTrue();
 
     List<Room> findAllByAvailableTrueAndHouseType(HouseType houseType);
-
-
+    List<Room> findAllByAvailableTrueAndHouseTypeAndRatFriendlyTrue(HouseType houseType);
+    List<Room> findAllByAvailableTrueAndHouseTypeAndRatFriendlyFalseOrEmptyTrueAndHouseType(HouseType houseType, HouseType houseType2);
 
 }
