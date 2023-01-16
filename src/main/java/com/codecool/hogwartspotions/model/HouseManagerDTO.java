@@ -5,6 +5,7 @@ import com.codecool.hogwartspotions.model.types.PetType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -16,4 +17,7 @@ public class HouseManagerDTO {
     private int studentAge;
     private PetType studentPetType;
     private HouseType houseType;
+    private List<String> ingredientNames;
+    private String potionName;
+
 }
