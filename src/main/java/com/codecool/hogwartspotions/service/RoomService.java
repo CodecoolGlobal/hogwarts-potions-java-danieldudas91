@@ -3,6 +3,7 @@ package com.codecool.hogwartspotions.service;
 import com.codecool.hogwartspotions.model.Room;
 import com.codecool.hogwartspotions.model.Student;
 import com.codecool.hogwartspotions.model.types.HouseType;
+import com.codecool.hogwartspotions.model.types.PetType;
 import com.codecool.hogwartspotions.service.JPA.RoomRepository;
 import com.codecool.hogwartspotions.service.JPA.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +34,31 @@ public class RoomService {
     }
 
     public void assignStudentToRoom(Student student) {
-        Room foundRoom = roomRepository.findAllByAvailableTrueAndHouseType(student.getHouseType())
-                .stream()
-                .max(Comparator.comparing(room -> room.getStudents().size()))
-                .orElseThrow(NoSuchElementException::new);
+        Room foundRoom;
+        if(student.getPetType().equals(PetType.RAT)){
+            foundRoom = roomRepository
+                    .findAllByAvailableTrueAndHouseTypeAndRatFriendlyTrue(student.getHouseType())
+                    .stream()
+                    .max(Comparator.comparing(room -> room.getStudents().size()))
+                    .orElseThrow(NoSuchElementException::new);
+        }
+        else if(student.getPetType().equals(PetType.OWL) || student.getPetType().equals(PetType.CAT)){
+            foundRoom = roomRepository
+                    .findAllByAvailableTrueAndHouseTypeAndRatFriendlyFalseOrEmptyTrueAndHouseType(student.getHouseType(), student.getHouseType())
+                    .stream()
+                    .max(Comparator.comparing(room -> room.getStudents().size()))
+                    .orElseThrow(NoSuchElementException::new);
+        }
+        else {
+            foundRoom = roomRepository
+                    .findAllByAvailableTrueAndHouseType(student.getHouseType())
+                    .stream()
+                    .max(Comparator.comparing(room -> room.getStudents().size()))
+                    .orElseThrow(NoSuchElementException::new);
+        }
         foundRoom.addStudent(student);
-        student.setRoomId(foundRoom.getId());
         roomRepository.save(foundRoom);
+        student.setRoomId(foundRoom.getId());
         studentRepository.save(student);
     }
 
@@ -56,7 +75,6 @@ public class RoomService {
     }
 
     public List<Student> getStudentsInRoom(Long roomId){
-        Room foundRoom = roomRepository.findById(roomId).orElseThrow(NoSuchElementException::new);
-        return foundRoom.getStudents();
+        return studentRepository.findAllByRoomId(roomId);
     }
 }
