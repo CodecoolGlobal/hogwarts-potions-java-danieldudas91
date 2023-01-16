@@ -30,7 +30,32 @@ public class Potion {
     private boolean unique;
 
     public Potion(String name, Student student, List<Ingredient> ingredients) {
+        addIngredients(ingredients);
         this.student = student;
         this.name = name;
+    }
+
+    public void addIngredients(List<Ingredient> ingredients){
+        ingredients.forEach(ingredient -> ingredient.setPotion(this));
+        this.ingredients =ingredients;
+    }
+
+    public void determineStatus(){
+        if(ingredients.size() < 5){
+             this.brewingStatus = BrewingStatus.BREW;
+        }
+        else{
+            if(this.unique){
+                 this.brewingStatus = BrewingStatus.DISCOVERY;
+            }
+            else {
+                 this.brewingStatus = BrewingStatus.REPLICA;
+            }
+        }
+    }
+    public void persistRecipe(String recipeName){
+        if(this.brewingStatus.equals(BrewingStatus.DISCOVERY)){
+            this.recipe = new Recipe(recipeName, this.student, this.ingredients);
+        }
     }
 }
