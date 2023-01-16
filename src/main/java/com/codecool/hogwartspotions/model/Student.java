@@ -21,6 +21,8 @@ public class Student {
     private Long id;
     @Column(name = "room_id")
     private Long roomId;
+    @Column(name = "student_recipe_id")
+    private Long recipeId;
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_type")
     private PetType petType;
