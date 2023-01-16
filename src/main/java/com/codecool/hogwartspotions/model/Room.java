@@ -26,6 +26,8 @@ public class Room {
     private HouseType houseType;
     @Column(name = "rat_friendly")
     private boolean ratFriendly;
+    @Column(name = "empty")
+    private boolean empty;
     private boolean available;
 
     public Room(String name, int capacity, HouseType houseType) {
@@ -35,6 +37,7 @@ public class Room {
         this.houseType = houseType;
         this.ratFriendly = !hasOwlOrCat();
         this.available = isAvailable();
+        this.empty = isEmpty();
     }
 
     public boolean isAvailable() {
@@ -44,6 +47,9 @@ public class Room {
     public void addStudent(Student student){
         if(isAvailable()){
             students.add(student);
+            this.ratFriendly = !hasOwlOrCat();
+            this.empty = isEmpty();
+            this.available = isAvailable();
         }
         else{
             System.out.println("Room is full");
@@ -53,5 +59,9 @@ public class Room {
     public boolean hasOwlOrCat() {
         return students.stream().anyMatch(student -> student.getPetType()
                 .equals(PetType.CAT) || student.getPetType().equals(PetType.OWL));
+    }
+
+    public boolean isEmpty() {
+        return students.size() == 0;
     }
 }
