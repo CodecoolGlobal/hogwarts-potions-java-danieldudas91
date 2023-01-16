@@ -1,5 +1,6 @@
 package com.codecool.hogwartspotions.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,26 +14,26 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @OneToOne(mappedBy = "recipe")
+    @JsonIgnore
+    private Potion potion;
     private String name;
-    @OneToOne
-    @JoinColumn(name = "id", referencedColumnName = "student_recipe_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "student_id", referencedColumnName = "id")
+    @JsonIgnore
     private Student student;
-    @OneToMany
-    @JoinColumn(name = "recipe_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "recipe")
     private List<Ingredient> ingredients;
 
     public Recipe(String name, Student student, List<Ingredient> ingredients) {
         this.name = name;
         this.student = student;
         this.ingredients = ingredients;
-        joinStudent();
-        joinIngredients();
     }
 
-    public void joinStudent(){
-        this.student.setRecipeId(id);
-    }
-    public void joinIngredients(){
-        ingredients.forEach(ingredient -> ingredient.setRecipeId(id));
+    public boolean hasSameIngredients(List<Ingredient> ingredients){
+        this.ingredients.sort(Comparator.comparing(Ingredient::getName));
+        ingredients.sort(Comparator.comparing(Ingredient::getName));
+        return this.ingredients.equals(ingredients);
     }
 }
