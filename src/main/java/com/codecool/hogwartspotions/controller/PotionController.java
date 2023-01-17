@@ -1,7 +1,6 @@
 package com.codecool.hogwartspotions.controller;
 
 import com.codecool.hogwartspotions.model.*;
-import com.codecool.hogwartspotions.service.IngredientService;
 import com.codecool.hogwartspotions.service.PotionService;
 import com.codecool.hogwartspotions.service.RecipeService;
 import com.codecool.hogwartspotions.service.StudentService;
@@ -17,9 +16,6 @@ public class PotionController {
     PotionService potionService;
     @Autowired
     StudentService studentService;
-    @Autowired
-    IngredientService ingredientService;
-
     @Autowired
     RecipeService recipeService;
 
