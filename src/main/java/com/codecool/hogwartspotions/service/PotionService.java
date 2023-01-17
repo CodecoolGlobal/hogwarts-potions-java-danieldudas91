@@ -82,11 +82,17 @@ public class PotionService {
 
     public void addIngredientToPotion(Long potionId, Ingredient ingredient) {
         Optional<Potion> potion = potionRepository.findById(potionId);
+        List<Recipe> recipes = (List<Recipe>) recipeRepository.findAll();
         if(ingredient.getId() == null){
             ingredientRepository.save(ingredient);
         }
         if(potion.isPresent()){
             potion.get().addIngredient(ingredient);
+            int studentRecipesNumber = recipeRepository.findAllByStudent(potion.get().getStudent()).size();
+            String recipeName = potion.get().getStudent().getName() + "'s #" + studentRecipesNumber + " potion";
+            potion.get().setUnique(recipes.stream().noneMatch(recipe -> recipe.hasSameIngredients(potion.get().getIngredients())));
+            potion.get().determineStatus();
+            potion.get().persistRecipe(recipeName);
             potionRepository.save(potion.get());
         }
         else{
