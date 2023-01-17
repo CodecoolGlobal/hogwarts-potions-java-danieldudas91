@@ -58,8 +58,6 @@ public class RoomService {
         }
         foundRoom.addStudent(student);
         roomRepository.save(foundRoom);
-        student.setRoomId(foundRoom.getId());
-        studentRepository.save(student);
     }
 
     public List<Room> getAvailableRooms() {

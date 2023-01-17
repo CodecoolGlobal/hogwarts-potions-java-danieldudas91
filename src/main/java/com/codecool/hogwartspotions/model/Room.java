@@ -3,7 +3,7 @@ package com.codecool.hogwartspotions.model;
 import com.codecool.hogwartspotions.model.types.HouseType;
 import com.codecool.hogwartspotions.model.types.PetType;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.*;
@@ -17,8 +17,7 @@ public class Room {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String name;
-    @OneToMany()
-    @JoinColumn(name = "room_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "room")
     private List<Student> students;
     private int capacity;
     @Enumerated(EnumType.STRING)
@@ -47,6 +46,7 @@ public class Room {
     public void addStudent(Student student){
         if(isAvailable()){
             students.add(student);
+            student.setRoom(this);
             this.ratFriendly = !hasOwlOrCat();
             this.empty = isEmpty();
             this.available = isAvailable();
