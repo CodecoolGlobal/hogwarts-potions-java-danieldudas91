@@ -38,8 +38,8 @@ public class Potion {
     }
 
     public void addIngredients(List<Ingredient> ingredients){
-        ingredients.forEach(ingredient -> ingredient.setPotion(this));
         this.ingredients =ingredients;
+        ingredients.forEach(ingredient -> ingredient.setPotion(this));
     }
 
     public void determineStatus(){
@@ -58,6 +58,13 @@ public class Potion {
     public void persistRecipe(String recipeName){
         if(this.brewingStatus.equals(BrewingStatus.DISCOVERY)){
             this.recipe = new Recipe(recipeName, this.student, this.ingredients);
+        }
+    }
+
+    public void addIngredient(Ingredient ingredient) {
+        if(ingredient != null){
+            ingredients.add(ingredient);
+            ingredient.setPotion(this);
         }
     }
 }
