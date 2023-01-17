@@ -50,4 +50,9 @@ public class PotionController {
     public void beginBrewing(@RequestBody HouseManagerDTO houseManagerDTO){
         potionService.beginBrewing(houseManagerDTO.getStudentId());
     }
+
+    @PutMapping("/potions/{potionId}/add")
+    public void addIngredientToPotion(@PathVariable Long potionId, @RequestBody Ingredient ingredient){
+        potionService.addIngredientToPotion(potionId, ingredient);
+    }
 }
