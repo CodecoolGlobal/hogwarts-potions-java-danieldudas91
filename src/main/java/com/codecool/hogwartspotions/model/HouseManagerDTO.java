@@ -13,6 +13,7 @@ import java.util.UUID;
 public class HouseManagerDTO {
     private int capacity;
     private Long roomId;
+    private Long studentId;
     private String studentName;
     private int studentAge;
     private PetType studentPetType;
