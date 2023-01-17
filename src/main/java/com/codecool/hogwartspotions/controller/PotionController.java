@@ -45,4 +45,9 @@ public class PotionController {
     public List<Potion> getAllPotionsMadeByStudent(@PathVariable Long studentId){
         return potionService.getAllPotionsByStudent(studentId);
     }
+
+    @PostMapping("/potions/brew")
+    public void beginBrewing(@RequestBody HouseManagerDTO houseManagerDTO){
+        potionService.beginBrewing(houseManagerDTO.getStudentId());
+    }
 }
