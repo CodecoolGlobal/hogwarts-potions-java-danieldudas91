@@ -8,10 +8,7 @@ import com.codecool.hogwartspotions.service.IngredientService;
 import com.codecool.hogwartspotions.service.PotionService;
 import com.codecool.hogwartspotions.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +26,7 @@ public class PotionController {
     public List<Potion> getAllPotions(){
         return potionService.getAllPotions();
     }
-
+    //TODO move logic to PotionService
     @PostMapping("/potions")
     public void addNewPotion(@RequestBody HouseManagerDTO houseManagerDTO){
         Student student = studentService.findStudentByName(houseManagerDTO.getStudentName());
@@ -43,5 +40,9 @@ public class PotionController {
         else {
             throw new RuntimeException("No such student in list!");
         }
+    }
+    @GetMapping("/potions/{studentId}")
+    public List<Potion> getAllPotionsMadeByStudent(@PathVariable Long studentId){
+        return potionService.getAllPotionsByStudent(studentId);
     }
 }
