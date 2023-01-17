@@ -3,11 +3,13 @@ package com.codecool.hogwartspotions.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.*;
 @Entity
 @Data
+@ToString(exclude = {"potion"})
 @NoArgsConstructor
 @Table(name="recipes")
 public class Recipe {

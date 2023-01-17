@@ -3,11 +3,13 @@ package com.codecool.hogwartspotions.model;
 import com.codecool.hogwartspotions.model.types.BrewingStatus;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.*;
 @Entity
 @Data
+@ToString(exclude = "ingredients")
 @NoArgsConstructor
 @Table(name = "potions")
 public class Potion {

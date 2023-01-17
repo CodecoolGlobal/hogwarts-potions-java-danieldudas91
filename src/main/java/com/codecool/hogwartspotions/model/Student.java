@@ -5,10 +5,12 @@ import com.codecool.hogwartspotions.model.types.PetType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Data
+@ToString(exclude = {"potion", "room", "recipe"})
 @Entity
 @NoArgsConstructor
 @Table(name = "students")
