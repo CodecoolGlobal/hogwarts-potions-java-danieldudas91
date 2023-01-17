@@ -4,6 +4,7 @@ import com.codecool.hogwartspotions.model.Ingredient;
 import com.codecool.hogwartspotions.model.Potion;
 import com.codecool.hogwartspotions.model.Recipe;
 import com.codecool.hogwartspotions.model.Student;
+import com.codecool.hogwartspotions.service.JPA.IngredientRepository;
 import com.codecool.hogwartspotions.service.JPA.PotionRepository;
 import com.codecool.hogwartspotions.service.JPA.RecipeRepository;
 import com.codecool.hogwartspotions.service.JPA.StudentRepository;
@@ -25,6 +26,9 @@ public class PotionService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private IngredientRepository ingredientRepository;
 
     //TODO use optionals
     public List<Potion> getAllPotions(){
@@ -74,5 +78,20 @@ public class PotionService {
         else{
             throw new NoSuchElementException("No student found with given id");
         }
+    }
+
+    public void addIngredientToPotion(Long potionId, Ingredient ingredient) {
+        Optional<Potion> potion = potionRepository.findById(potionId);
+        if(ingredient.getId() == null){
+            ingredientRepository.save(ingredient);
+        }
+        if(potion.isPresent()){
+            potion.get().addIngredient(ingredient);
+            potionRepository.save(potion.get());
+        }
+        else{
+            throw new NoSuchElementException("No student found with given id");
+        }
+
     }
 }
