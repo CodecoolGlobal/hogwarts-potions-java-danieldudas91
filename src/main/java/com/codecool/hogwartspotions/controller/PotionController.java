@@ -1,11 +1,9 @@
 package com.codecool.hogwartspotions.controller;
 
-import com.codecool.hogwartspotions.model.HouseManagerDTO;
-import com.codecool.hogwartspotions.model.Ingredient;
-import com.codecool.hogwartspotions.model.Potion;
-import com.codecool.hogwartspotions.model.Student;
+import com.codecool.hogwartspotions.model.*;
 import com.codecool.hogwartspotions.service.IngredientService;
 import com.codecool.hogwartspotions.service.PotionService;
+import com.codecool.hogwartspotions.service.RecipeService;
 import com.codecool.hogwartspotions.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +19,9 @@ public class PotionController {
     StudentService studentService;
     @Autowired
     IngredientService ingredientService;
+
+    @Autowired
+    RecipeService recipeService;
 
     @GetMapping("/potions")
     public List<Potion> getAllPotions(){
@@ -54,5 +55,10 @@ public class PotionController {
     @PutMapping("/potions/{potionId}/add")
     public void addIngredientToPotion(@PathVariable Long potionId, @RequestBody Ingredient ingredient){
         potionService.addIngredientToPotion(potionId, ingredient);
+    }
+
+    @GetMapping("/potions/{potionId}/help")
+    public List<Recipe> getRecipesContainingSameIngredients(@PathVariable Long potionId){
+        return recipeService.getRecipesIncludingSameIngredients(potionId);
     }
 }
