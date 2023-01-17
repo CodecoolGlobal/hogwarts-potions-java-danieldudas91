@@ -28,9 +28,14 @@ public class Recipe {
     private List<Ingredient> ingredients;
 
     public Recipe(String name, Student student, List<Ingredient> ingredients) {
+        addIngredients(ingredients);
         this.name = name;
         this.student = student;
-        this.ingredients = ingredients;
+    }
+
+    public void addIngredients(List<Ingredient> ingredients){
+        this.ingredients =ingredients;
+        ingredients.forEach(ingredient -> ingredient.setRecipe(this));
     }
 
     public boolean hasSameIngredients(List<Ingredient> ingredients){
