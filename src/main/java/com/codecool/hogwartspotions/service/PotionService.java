@@ -30,15 +30,15 @@ public class PotionService {
     @Autowired
     private IngredientRepository ingredientRepository;
 
+    
+
     //TODO use optionals
     public List<Potion> getAllPotions(){
         return (List<Potion>) potionRepository.findAll();
     }
     public void addNewPotion(Potion potion){
-        List<Recipe> recipes = (List<Recipe>) recipeRepository.findAll();
-        int studentRecipesNumber = recipeRepository.findAllByStudent(potion.getStudent()).size();
-        String recipeName = potion.getStudent().getName() + "'s #" + studentRecipesNumber + " potion";
-        potion.setUnique(recipes.stream().noneMatch(recipe -> recipe.hasSameIngredients(potion.getIngredients())));
+        String recipeName = generateRecipeNameForPotion(potion);
+        potion.setUnique(isPotionUnique(potion));
         potion.determineStatus();
         potion.persistRecipe(recipeName);
         if(potion.getRecipe() != null){
@@ -60,19 +60,11 @@ public class PotionService {
 
     public void beginBrewing(Long studentId) {
         Optional<Student> student = studentRepository.findById(studentId);
-        List<Recipe> recipes = (List<Recipe>) recipeRepository.findAll();
-
         if(student.isPresent()){
-            //TODO use random generated names
             String potionName = "new potion";
             List<Ingredient> emptyIngredientList = new ArrayList<>();
             Potion potion = new Potion(potionName, student.get(), emptyIngredientList);
-            //TODO extract method
-            int studentRecipesNumber = recipeRepository.findAllByStudent(potion.getStudent()).size();
-            String recipeName = potion.getStudent().getName() + "'s #" + studentRecipesNumber + " potion";
-            potion.setUnique(recipes.stream().noneMatch(recipe -> recipe.hasSameIngredients(potion.getIngredients())));
-            potion.determineStatus();
-            potion.persistRecipe(recipeName);
+            determinePotionStatus(potion);
             potionRepository.save(potion);
         }
         else{
@@ -80,19 +72,30 @@ public class PotionService {
         }
     }
 
+    private void determinePotionStatus(Potion potion) {
+        potion.setUnique(isPotionUnique(potion));
+        potion.determineStatus();
+        potion.persistRecipe(generateRecipeNameForPotion(potion));
+    }
+
+    private boolean isPotionUnique(Potion potion) {
+        List<Recipe> allRecipes = (List<Recipe>) recipeRepository.findAll();
+        return allRecipes.stream().noneMatch(recipe -> recipe.hasSameIngredients(potion.getIngredients()));
+    }
+
+    private String generateRecipeNameForPotion(Potion potion) {
+        int studentRecipesNumber = recipeRepository.findAllByStudent(potion.getStudent()).size();
+        return potion.getStudent().getName() + "'s #" + studentRecipesNumber + " potion";
+    }
+
     public void addIngredientToPotion(Long potionId, Ingredient ingredient) {
         Optional<Potion> potion = potionRepository.findById(potionId);
-        List<Recipe> recipes = (List<Recipe>) recipeRepository.findAll();
         if(ingredient.getId() == null){
             ingredientRepository.save(ingredient);
         }
         if(potion.isPresent()){
             potion.get().addIngredient(ingredient);
-            int studentRecipesNumber = recipeRepository.findAllByStudent(potion.get().getStudent()).size();
-            String recipeName = potion.get().getStudent().getName() + "'s #" + studentRecipesNumber + " potion";
-            potion.get().setUnique(recipes.stream().noneMatch(recipe -> recipe.hasSameIngredients(potion.get().getIngredients())));
-            potion.get().determineStatus();
-            potion.get().persistRecipe(recipeName);
+            determinePotionStatus(potion.get());
             potionRepository.save(potion.get());
         }
         else{
